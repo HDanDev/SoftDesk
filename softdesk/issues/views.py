@@ -1,19 +1,17 @@
-from rest_framework import generics
+from rest_framework import viewsets, permissions
 from .models import Issue
+from users.views import IsContributor
 from .serializers import IssueSerializer
-from rest_framework.permissions import IsAuthenticated
 
 
-class IssueList(generics.ListCreateAPIView):
+class IssueViewSet(viewsets.ModelViewSet):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
-    permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [permissions.IsAuthenticated()]
+        return [IsContributor()]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
-
-class IssueDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Issue.objects.all()
-    serializer_class = IssueSerializer
-    permission_classes = [IsAuthenticated]
