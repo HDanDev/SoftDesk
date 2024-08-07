@@ -1,7 +1,6 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
 
 urlpatterns = [
-    path('api/users/', views.UserList.as_view(), name='user-list'),
-    path('api/contributors/', views.ContributorList.as_view(), name='contributor-list'),
+    path('', include('djoser.urls')),
+    path('', include('djoser.urls.jwt')),
 ]
