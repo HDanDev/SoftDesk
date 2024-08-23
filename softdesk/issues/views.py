@@ -8,6 +8,12 @@ class IssueViewSet(viewsets.ModelViewSet):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
 
+    def get_serializer_context(self):
+        return {
+            'request': self.request,
+            'view': self
+            }
+
     def get_permissions(self):
         if self.action == 'create':
             return [permissions.IsAuthenticated()]

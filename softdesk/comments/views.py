@@ -8,6 +8,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+    def get_serializer_context(self):
+        return {
+            'request': self.request,
+            'view': self
+            }
+
     def get_permissions(self):
         if self.action == 'create':
             return [permissions.IsAuthenticated()]
