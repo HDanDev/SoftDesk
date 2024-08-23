@@ -17,3 +17,15 @@ class ProjectSerializer(serializers.ModelSerializer):
             'author',
             'created_time'
             ]
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        request = self.context.get('request')
+        view = self.context.get('view')
+
+        if view and view.action == 'list':
+            representation.pop('id', None)
+            representation.pop('description', None)
+
+        return representation
