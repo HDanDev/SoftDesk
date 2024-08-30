@@ -7,7 +7,7 @@ class UserCreateSerializer(BaseUserCreateSerializer):
     class Meta(BaseUserCreateSerializer.Meta):
         model = User
         fields = [
-            'id',
+            'uuid',
             'username',
             'email',
             'password',
@@ -21,7 +21,7 @@ class UserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = User
         fields = [
-            'id',
+            'uuid',
             'username',
             'email',
             'age',
@@ -36,7 +36,6 @@ class UserSerializer(BaseUserSerializer):
         view = self.context.get('view')
 
         if view and view.action == 'list':
-            representation.pop('id', None)
             representation.pop('email', None)
             representation.pop('age', None)
             representation.pop('can_be_contacted', None)
@@ -53,19 +52,8 @@ class ContributorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contributor
         fields = [
-            'id',
+            'uuid',
             'user',
             'project',
             'created_time'
             ]
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-
-        request = self.context.get('request')
-        view = self.context.get('view')
-
-        if view and view.action == 'list':
-            representation.pop('id', None)
-
-        return representation

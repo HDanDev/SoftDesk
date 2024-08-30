@@ -13,7 +13,7 @@ class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
         fields = [
-            'id',
+            'uuid',
             'title',
             'description',
             'project',
@@ -32,7 +32,6 @@ class IssueSerializer(serializers.ModelSerializer):
         view = self.context.get('view')
 
         if view and view.action == 'list':
-            representation.pop('id', None)
             representation.pop('description', None)
             representation.pop('author', None)
             representation.pop('assignee', None)
