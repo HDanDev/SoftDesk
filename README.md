@@ -70,6 +70,12 @@ SoftDesk is a project management platform that allows users to manage projects, 
    py manage.py runserver
    ```
 
+   Access the application
+
+   Open your browser and go to: http://localhost:8000
+
+  Or use a tool such as [Postman](https://identity.getpostman.com/login) to simplify your requests.
+
 ## Endpoints
 
 | Method | Endpoint                    | Description                     |
@@ -85,10 +91,3 @@ SoftDesk is a project management platform that allows users to manage projects, 
 | GET    | `/projects/:id/issues`       | Get all issues for a project    |
 | POST   | `/issues/:id/comments`       | Add a comment to an issue       |
 | GET    | `/issues/:id/comments`       | List comments on an issue       |
-
-
-   Access the application
-
-   Open your browser and go to: http://localhost:8000
-
-  Or use a tool such as [Postman](https://identity.getpostman.com/login) to simplify your requests.
