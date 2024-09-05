@@ -70,6 +70,23 @@ SoftDesk is a project management platform that allows users to manage projects, 
    py manage.py runserver
    ```
 
+## Endpoints
+
+| Method | Endpoint                    | Description                     |
+|--------|-----------------------------|---------------------------------|
+| POST   | `/users/register`            | Register a new user             |
+| POST   | `/users/login`               | User login, returns JWT         |
+| GET    | `/projects`                  | List all projects               |
+| POST   | `/projects`                  | Create a new project            |
+| GET    | `/projects/:id`              | Get a single project            |
+| PUT    | `/projects/:id`              | Update a project                |
+| DELETE | `/projects/:id`              | Delete a project                |
+| POST   | `/projects/:id/issues`       | Create an issue for a project   |
+| GET    | `/projects/:id/issues`       | Get all issues for a project    |
+| POST   | `/issues/:id/comments`       | Add a comment to an issue       |
+| GET    | `/issues/:id/comments`       | List comments on an issue       |
+
+
    Access the application
 
    Open your browser and go to: http://localhost:8000
