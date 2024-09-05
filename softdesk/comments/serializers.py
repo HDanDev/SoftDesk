@@ -27,7 +27,6 @@ class CommentSerializer(serializers.ModelSerializer):
         view = self.context.get('view')
 
         if view and view.action == 'list':
-            representation.pop('uuid', None)
             representation.pop('description', None)
 
         return representation

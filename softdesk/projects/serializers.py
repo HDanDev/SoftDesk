@@ -10,7 +10,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = [
-            'id',
+            'uuid',
             'name',
             'description',
             'type',
@@ -25,7 +25,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         view = self.context.get('view')
 
         if view and view.action == 'list':
-            representation.pop('id', None)
             representation.pop('description', None)
 
         return representation

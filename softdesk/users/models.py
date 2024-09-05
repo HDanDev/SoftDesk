@@ -3,9 +3,15 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from projects.models import Project
 from .managers import UserManager
+import uuid
 
 
 class User(AbstractUser):
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+        unique=True
+        )
     age = models.PositiveIntegerField()
     can_be_contacted = models.BooleanField(
         default=False
