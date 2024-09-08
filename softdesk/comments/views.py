@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
 from .models import Comment
-from users.views import IsContributor, IsAuthor
+from users.views import IsContributor, IsAuthor, IsAllowedToCreate
 from issues.models import Issue
 from .serializers import CommentSerializer
 
@@ -8,6 +8,9 @@ from .serializers import CommentSerializer
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    
+    def get_queryset(self):
+        return Comment.objects.filter(issue__project__contributor__user=self.request.user)
 
     def get_serializer_context(self):
         return {
@@ -25,7 +28,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'create':
-            return [permissions.IsAuthenticated()]
+            return [permissions.IsAuthenticated(), IsAllowedToCreate()]
         elif self.action in [
             'update',
             'partial_update',

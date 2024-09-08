@@ -6,6 +6,23 @@ from comments.models import Comment
 from .serializers import UserSerializer, ContributorSerializer, UserCreateSerializer
 
 
+class IsAllowedToCreate(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if 'project' in request.data:
+            project_id = request.data.get('project')
+        elif 'issue' in request.data:
+            issue_id = request.data.get('issue')
+            if issue_id:
+                issue = Issue.objects.get(pk=issue_id)
+                project_id = issue.project.id
+            else:
+                return False
+        else:
+            return False
+
+        return Contributor.objects.filter(user=request.user, project_id=project_id).exists()
+
+
 class IsSelf(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
@@ -43,7 +60,12 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated()
         ]
-    
+
+    def get_queryset(self):
+        user_contributed_projects_ids = Contributor.objects.filter(user=self.request.user).values_list('project_id', flat=True)
+        return User.objects.filter(contributor__project_id__in=user_contributed_projects_ids).distinct()
+
+
     def get_serializer_class(self):
         if self.action == 'create':
             return UserCreateSerializer
