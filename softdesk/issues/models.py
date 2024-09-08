@@ -1,7 +1,6 @@
 from django.db import models
 from projects.models import Project
 from users.models import User
-import uuid
 
 
 class Issue(models.Model):
@@ -31,12 +30,6 @@ class Issue(models.Model):
         (IN_PROGRESS, 'In Progress'),
         (FINISHED, 'Finished'),
     ]
-
-    uuid = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
-        unique=True
-        )
 
     title = models.CharField(
         max_length=100

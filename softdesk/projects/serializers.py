@@ -10,7 +10,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = [
-            'uuid',
+            'id',
             'name',
             'description',
             'type',

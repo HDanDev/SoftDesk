@@ -13,7 +13,7 @@ class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
         fields = [
-            'uuid',
+            'id',
             'title',
             'description',
             'project',

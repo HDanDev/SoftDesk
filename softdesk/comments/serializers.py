@@ -1,13 +1,14 @@
 from rest_framework import serializers
 from .models import Comment
+from issues.models import Issue
 
 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(
         source='author.username'
         )
-    issue = serializers.ReadOnlyField(
-        source='issue.id'
+    issue = serializers.PrimaryKeyRelatedField(
+        queryset=Issue.objects.all()
         )
 
     class Meta:

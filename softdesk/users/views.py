@@ -3,7 +3,7 @@ from .models import User, Contributor
 from projects.models import Project
 from issues.models import Issue
 from comments.models import Comment
-from .serializers import UserSerializer, ContributorSerializer
+from .serializers import UserSerializer, ContributorSerializer, UserCreateSerializer
 
 
 class IsSelf(permissions.BasePermission):
@@ -41,9 +41,13 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [
-        permissions.IsAuthenticated(),
-        IsContributor()
+        permissions.IsAuthenticated()
         ]
+    
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return UserCreateSerializer
+        return UserSerializer
 
     def get_serializer_context(self):
         return {
@@ -53,7 +57,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'create':
-            return [permissions.IsAuthenticated()]
+            return [permissions.AllowAny()]
         elif self.action in [
             'update',
             'partial_update',
@@ -65,6 +69,9 @@ class UserViewSet(viewsets.ModelViewSet):
                 ]
         return [IsContributor()]
 
+    def perform_create(self, serializer):
+        age = self.request.data.get('age')
+        serializer.save()
 
 class ContributorViewSet(viewsets.ModelViewSet):
     queryset = Contributor.objects.all()

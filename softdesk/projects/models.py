@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-import uuid
 
 
 class Project(models.Model):
@@ -14,12 +13,6 @@ class Project(models.Model):
         (IOS, 'iOS'),
         (ANDROID, 'Android'),
     ]
-
-    uuid = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
-        unique=True
-        )
 
     name = models.CharField(
         max_length=100
