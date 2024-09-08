@@ -1,17 +1,10 @@
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from projects.models import Project
 from .managers import UserManager
-import uuid
 
 
 class User(AbstractUser):
-    uuid = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
-        unique=True
-        )
     age = models.PositiveIntegerField()
     can_be_contacted = models.BooleanField(
         default=False
@@ -35,9 +28,10 @@ class User(AbstractUser):
     )
 
     def save(self, *args, **kwargs):
-        if self.age < 15:
-            msg = "User must be at least 15 years old to give consent"
-            raise ValueError(msg)
+        if self.age is None:
+            raise ValueError("Age is required.")
+        if self.age is not None and self.age < 15:
+            raise ValueError("User must be at least 15 years old to give consent.")
         super().save(*args, **kwargs)
 
 

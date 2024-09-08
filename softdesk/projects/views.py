@@ -8,6 +8,9 @@ from .serializers import ProjectSerializer
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    
+    def get_queryset(self):
+        return Project.objects.filter(contributor__user=self.request.user)
 
     def get_serializer_context(self):
         return {

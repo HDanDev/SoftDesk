@@ -7,21 +7,31 @@ class UserCreateSerializer(BaseUserCreateSerializer):
     class Meta(BaseUserCreateSerializer.Meta):
         model = User
         fields = [
-            'uuid',
+            'id',
             'username',
             'email',
             'password',
             'age',
             'can_be_contacted',
             'can_data_be_shared'
-            ]
+            ]    
+        
+        def validate_age(self, value):
+            if value is None:
+                raise serializers.ValidationError("Age is required.")
+            if value < 15:
+                raise serializers.ValidationError("User must be at least 15 years old.")
+            return value
+        
+        def create(self, validated_data):
+            return User.objects.create_user(**validated_data)
 
 
 class UserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = User
         fields = [
-            'uuid',
+            'id',
             'username',
             'email',
             'age',
@@ -52,7 +62,7 @@ class ContributorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contributor
         fields = [
-            'uuid',
+            'id',
             'user',
             'project',
             'created_time'
